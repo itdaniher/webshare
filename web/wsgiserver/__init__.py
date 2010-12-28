@@ -107,6 +107,8 @@ except ImportError:
 
 import errno
 
+import drop
+
 def plat_specific_errors(*errnames):
     """Return error numbers for all errors in errnames on this platform.
     
@@ -1599,6 +1601,7 @@ class CherryPyWSGIServer(object):
         self.socket.settimeout(1)
         self.socket.listen(self.request_queue_size)
         
+        drop.drop_privileges("limited", "limited")     
         # Create worker threads
         self.requests.start()
         
