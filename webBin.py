@@ -7,17 +7,10 @@ import mimetypes
 import re
 
 shortURLs = {
-	'ece': 'http://bit.ly/ece_stockroom',
-	't': '/static/tinkerers.pdf',
-	'favicon.ico' : '/static/favicon.ico',
 	'wl' : 'http://213.251.145.96/' }
 
 fileDict = {
-	'' : '/webshare/readme',
-	'whoami_png' : '/webshare/static/professionalTimeline.png',
-	'whoami_pdf' : '/webshare/static/Resume.pdf',
-	'whoami_svg' : '/webshare/static/professionalTimeline.svg',
-	'graphicResume' : '/webshare/static/professionalTimeline.png'}
+	'' : './readme'}
 
 regexURLs = "/(%s)" % '|'.join(shortURLs.keys())
 regexFiles = "/(%s)" % '|'.join(fileDict.keys())
@@ -26,24 +19,12 @@ urls = (
 		regexFiles, 'files',
 		'/p', 'pBin',
 		'/upload', 'upload',
-		regexURLs, 'url',
-		'/whoami', 'whoami'
-)
+		regexURLs, 'url')
 
 app = web.application(urls, globals())
 web.config.debug = False
 
 pBinDir = "data"
-
-class whoami:
-	def GET(self):
-		ua = web.ctx.env['HTTP_USER_AGENT']
-		if re.search('Chrome', ua):
-			web.seeother('/whoami_svg')
-		elif re.search('MSIE', ua):
-			web.seeother('/whoami_pdf')
-		else:
-			web.seeother('/whoami_png')
 
 class files:
 	def GET(self, name):
