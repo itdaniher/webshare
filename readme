@@ -1,9 +1,0 @@
-this is Ian Daniher's webapp & file hosting server.
-he likes building things and tinkering.
-he's studying Electrical Engineering at Olin college.
-
-@itdaniher, explodingmind@gmail.com
-
-site use:
-* cat $file | curl --http1.0 -F "content=<-" $server/p
-* $server/upload
