@@ -5,12 +5,13 @@ from random import choice
 from string import letters
 import mimetypes
 import re
+from tools import markdown
 
 shortURLs = {
 	'wl' : 'http://213.251.145.96/' }
 
 fileDict = {
-	'' : './readme'}
+	'' : './README.md'}
 
 regexURLs = "/(%s)" % '|'.join(shortURLs.keys())
 regexFiles = "/(%s)" % '|'.join(fileDict.keys())
@@ -33,9 +34,11 @@ class files:
 			mimeType = mimetypes.guess_type(file)[0]
 			if mimeType == "None":
 				mimeType = "text/plain; charset=UTF-8"
-			web.header("Content-Type", mimeType)
-			return open(file).read()
-
+			if file.split('.')[-1] != "md":
+				web.header("Content-Type", mimeType)
+				return open(file).read()
+			else:
+				return markdown.markdown(open(file).read())
 class url:
 	def GET(self, name):
 		if name in shortURLs.keys():
