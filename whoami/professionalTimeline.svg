@@ -268,7 +268,7 @@
      guideopacity="0.49803922"
      inkscape:window-width="1440"
      inkscape:window-height="875"
-     inkscape:window-x="-6"
+     inkscape:window-x="0"
      inkscape:window-y="2"
      inkscape:window-maximized="1"
      gridtolerance="10000">
@@ -325,7 +325,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -1117,7 +1117,7 @@
     <a
        id="a3016"
        xlink:href="http://bit.ly/portfolioITD"
-       transform="translate(116,20)">
+       transform="translate(36,40)">
       <text
          transform="translate(0,287.35975)"
          id="text3004"
@@ -1136,17 +1136,33 @@
        xlink:href="http://bit.ly/turretSlideshow"
        transform="translate(-6,0)">
       <text
-         transform="translate(0,287.35975)"
          id="text3032"
-         y="239.72067"
-         x="454.56866"
+         y="527.08044"
+         x="494.56866"
          style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif"
          xml:space="preserve"><tspan
            style="font-size:20px"
-           y="239.72067"
-           x="454.56866"
+           y="527.08044"
+           x="494.56866"
            id="tspan3034"
            sodipodi:role="line">http://bit.ly/turretSlideshow</tspan></text>
+    </a>
+    <a
+       transform="translate(-6,48)"
+       xlink:href="https://github.com/itdaniher/repositories"
+       id="a3003">
+      <text
+         xml:space="preserve"
+         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Serif;-inkscape-font-specification:DejaVu Serif"
+         x="454.56866"
+         y="239.72067"
+         id="text3005"
+         transform="translate(0,287.35975)"><tspan
+           sodipodi:role="line"
+           id="tspan3007"
+           x="454.56866"
+           y="239.72067"
+           style="font-size:20px">https://github.com/itdaniher/repositories</tspan></text>
     </a>
   </g>
 </svg>
