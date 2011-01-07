@@ -5,13 +5,21 @@ from random import choice
 from string import letters
 import mimetypes
 import re
-from tools import markdown
 
 shortURLs = {
-	'wl' : 'http://213.251.145.96/' }
+        'ece': 'http://bit.ly/ece_stockroom',
+        't': '/static/tinkerers.pdf',
+        'favicon.ico' : '/static/favicon.ico',
+        'wl' : 'http://213.251.145.96/' }
 
 fileDict = {
-	'' : './README.md'}
+	'phantom' : './static/phantom.mkd',
+	'WAM' : './static/WAM.mkd',
+	'touchSense' : './static/touchSense.mkd',
+        'whoami_png' : './whoami/professionalTimeline.png',
+        'whoami_pdf' : './whoami/Resume.pdf',
+        'whoami_svg' : './whoami/professionalTimeline.svg',
+	'' : './README.mkd'}
 
 regexURLs = "/(%s)" % '|'.join(shortURLs.keys())
 regexFiles = "/(%s)" % '|'.join(fileDict.keys())
@@ -20,12 +28,23 @@ urls = (
 		regexFiles, 'files',
 		'/p', 'pBin',
 		'/upload', 'upload',
-		regexURLs, 'url')
+		regexURLs, 'url',
+		'/whoami', 'whoami')
 
 app = web.application(urls, globals())
 web.config.debug = False
 
 pBinDir = "data"
+
+class whoami:
+        def GET(self):
+                ua = web.ctx.env['HTTP_USER_AGENT']
+                if re.search('Chrome', ua):
+                        web.seeother('/whoami_svg')
+                elif re.search('MSIE', ua):
+                        web.seeother('/whoami_pdf')
+                else:
+                        web.seeother('/whoami_png')
 
 class files:
 	def GET(self, name):
@@ -34,11 +53,13 @@ class files:
 			mimeType = mimetypes.guess_type(file)[0]
 			if mimeType == "None":
 				mimeType = "text/plain; charset=UTF-8"
-			if file.split('.')[-1] != "md":
+			if file.split('.')[-1] != "mkd":
 				web.header("Content-Type", mimeType)
 				return open(file).read()
 			else:
+				web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
 				return markdown.markdown(open(file).read())
+
 class url:
 	def GET(self, name):
 		if name in shortURLs.keys():
