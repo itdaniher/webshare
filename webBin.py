@@ -5,6 +5,8 @@ from random import choice
 from string import letters
 import mimetypes
 import re
+import markdown
+import codecs
 
 shortURLs = {
         'ece': 'http://bit.ly/ece_stockroom',
@@ -58,8 +60,8 @@ class files:
 				return open(file).read()
 			else:
 				web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
-				return markdown.markdown(open(file).read())
-
+				input_file = codecs.open(file, mode="r", encoding="utf8")
+				return markdown.markdown(input_file.read())
 class url:
 	def GET(self, name):
 		if name in shortURLs.keys():
