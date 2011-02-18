@@ -17,8 +17,8 @@
    inkscape:version="0.47 r22583"
    sodipodi:docname="professionalTimeline.svg"
    inkscape:export-filename="/tmp/professionalTimeline.png"
-   inkscape:export-xdpi="120"
-   inkscape:export-ydpi="120">
+   inkscape:export-xdpi="150"
+   inkscape:export-ydpi="150">
   <defs
      id="defs4">
     <marker
@@ -257,7 +257,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.98994949"
      inkscape:cx="507.40769"
-     inkscape:cy="696.21789"
+     inkscape:cy="251.75077"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="true"
@@ -267,9 +267,9 @@
      guidecolor="#ff0000"
      guideopacity="0.49803922"
      inkscape:window-width="1440"
-     inkscape:window-height="875"
+     inkscape:window-height="825"
      inkscape:window-x="0"
-     inkscape:window-y="2"
+     inkscape:window-y="24"
      inkscape:window-maximized="1"
      gridtolerance="10000">
     <inkscape:grid
@@ -325,7 +325,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -978,18 +978,18 @@
          sodipodi:role="line"
          x="57.857143"
          y="609.85974"
-         id="tspan7203">-learning Eagle PCB</tspan><tspan
+         id="tspan7205">-learning Altium Designer</tspan><tspan
+         sodipodi:role="line"
+         x="57.857143"
+         y="609.85974"
+         id="tspan3010">-learning use of manual mill / lathe</tspan><tspan
          sodipodi:role="line"
          x="57.857143"
          y="624.85974"
-         id="tspan7205">-learning use of manual mill / lathe</tspan><tspan
-         sodipodi:role="line"
-         x="57.857143"
-         y="639.85974"
          id="tspan7159" /><tspan
          sodipodi:role="line"
          x="57.857143"
-         y="654.85974"
+         y="639.85974"
          id="tspan7167" /></text>
     <text
        id="text7209"
