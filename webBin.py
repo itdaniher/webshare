@@ -17,9 +17,10 @@ shortURLs = {
 fileDict = {
 	'phantom' : './static/phantom.mkd',
 	'WAM' : './static/WAM.mkd',
+	'lab1' :'./static/Lab1.mkd',
 	'touchSense' : './static/touchSense.mkd',
         'whoami_png' : './whoami/professionalTimeline.png',
-        'whoami_pdf' : './whoami/Resume.pdf',
+        'whoami_pdf' : './whoami/ResumeITD.pdf',
         'whoami_svg' : './whoami/professionalTimeline.svg',
 	'' : './README.mkd'}
 
