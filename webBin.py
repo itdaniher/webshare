@@ -5,14 +5,14 @@ from random import choice
 from string import letters
 import mimetypes
 import re
-import markdown
+from tools import markdown
 import codecs
 
 shortURLs = {
         'ece': 'http://bit.ly/ece_stockroom',
         't': '/static/tinkerers.pdf',
-        'favicon.ico' : '/static/favicon.ico',
-        'wl' : 'http://213.251.145.96/' }
+        'wl' : 'http://213.251.145.96/',
+	'had': 'http://hackaday.com/2011/01/15/r2d2-wannabe-lacks-lightsaber-launcher-autonomy/' }
 
 fileDict = {
 	'phantom' : './static/phantom.mkd',
@@ -22,7 +22,8 @@ fileDict = {
         'whoami_png' : './whoami/professionalTimeline.png',
         'whoami_pdf' : './whoami/ResumeITD.pdf',
         'whoami_svg' : './whoami/professionalTimeline.svg',
-	'' : './README.mkd'}
+	'' : './README.mkd',
+	'favicon.ico' : './static/favicon.ico'}
 
 regexURLs = "/(%s)" % '|'.join(shortURLs.keys())
 regexFiles = "/(%s)" % '|'.join(fileDict.keys())
