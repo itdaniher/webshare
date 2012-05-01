@@ -1,2 +1,2 @@
-python webBin.py 80 2>&1 | tee -a log-$(date +%x | sed -e 's/\//./g').txt
+python webBin.py 8000 2>&1 | tee -a log-$(date +%x | sed -e 's/\//./g').txt
 
