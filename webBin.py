@@ -9,19 +9,9 @@ from tools import markdown
 import codecs
 
 shortURLs = {
-        'ece': 'http://bit.ly/ece_stockroom',
-        't': '/static/tinkerers.pdf',
-        'wl' : 'http://213.251.145.96/',
-	'had': 'http://hackaday.com/2011/01/15/r2d2-wannabe-lacks-lightsaber-launcher-autonomy/' }
+        'ece': 'http://bit.ly/ece_stockroom'}
 
 fileDict = {
-	'phantom' : './static/phantom.mkd',
-	'WAM' : './static/WAM.mkd',
-	'lab1' :'./static/Lab1.mkd',
-	'touchSense' : './static/touchSense.mkd',
-        'whoami_png' : './whoami/professionalTimeline.png',
-        'whoami_pdf' : './whoami/ResumeITD.pdf',
-        'whoami_svg' : './whoami/professionalTimeline.svg',
 	'' : './README.mkd',
 	'favicon.ico' : './static/favicon.ico'}
 
@@ -43,12 +33,6 @@ pBinDir = "data"
 class whoami:
         def GET(self):
                 ua = web.ctx.env['HTTP_USER_AGENT']
-                if re.search('Chrome', ua):
-                        web.seeother('/whoami_svg')
-                elif re.search('MSIE', ua):
-                        web.seeother('/whoami_pdf')
-                else:
-                        web.seeother('/whoami_png')
 
 class files:
 	def GET(self, name):
