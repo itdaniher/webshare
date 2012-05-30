@@ -69,7 +69,7 @@ class pBin:
 		f = open(pBinDir + "/" + filename, "w")
 		f.write(content)
 		f.close()
-		return web.ctx.host + "/p?" + filename + "\n"
+		return "http://" + web.ctx.host + "/p?" + filename + "\n"
 	def GET(self):
 		input = list(web.input())
 		try:
