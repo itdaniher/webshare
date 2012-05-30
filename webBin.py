@@ -41,6 +41,9 @@ pBinDir = "data"
 class whoami:
         def GET(self):
                 ua = web.ctx.env['HTTP_USER_AGENT']
+		web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
+		input_file = codecs.open("./itdaniher/CV/CV.mkd", mode="r", encoding="utf8")
+		return markdown.markdown(input_file.read())
 
 class files:
 	def GET(self, name):
