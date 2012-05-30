@@ -18,47 +18,35 @@ import codecs
 shortURLs = {
         'ece': 'http://bit.ly/ece_stockroom'}
 
-fileDict = {
-	'' : './README.mkd',
-	'favicon.ico' : './static/favicon.ico'}
-
 regexURLs = "/(%s)" % '|'.join(shortURLs.keys())
-regexFiles = "/(%s)" % '|'.join(fileDict.keys())
 
 urls = (
-		regexFiles, 'files',
+		'/(''|favicon\.ico|.*\.mkd)', 'files',
 		'/p', 'pBin',
 		'/upload', 'upload',
-		regexURLs, 'url',
-		'/whoami', 'whoami')
+		regexURLs, 'url')
 
 app = web.application(urls, globals(), autoreload=False)
 application = app.wsgifunc()
-web.config.debug = False
+web.config.debug = False 
 
 pBinDir = "data"
 
-class whoami:
-        def GET(self):
-                ua = web.ctx.env['HTTP_USER_AGENT']
-		web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
-		input_file = codecs.open("./itdaniher/CV/CV.mkd", mode="r", encoding="utf8")
-		return markdown.markdown(input_file.read())
-
 class files:
 	def GET(self, name):
-		if name in fileDict.keys():
-			file = fileDict[name]
-			mimeType = mimetypes.guess_type(file)[0]
-			if mimeType == "None":
-				mimeType = "text/plain; charset=UTF-8"
-			if file.split('.')[-1] != "mkd":
-				web.header("Content-Type", mimeType)
-				return open(file).read()
-			else:
-				web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
-				input_file = codecs.open(file, mode="r", encoding="utf8")
-				return markdown.markdown(input_file.read())
+		if name == "":
+			name = "README.mkd"
+		mimeType = mimetypes.guess_type(name)[0]
+		if mimeType == "None":
+			mimeType = "text/plain; charset=UTF-8"
+		if name.split('.')[-1] != "mkd":
+			web.header("Content-Type", mimeType)
+			return open("static/"+name).read()
+		else:
+			web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
+			input_file = codecs.open("mkd/"+name, mode="r", encoding="utf8")
+			return markdown.markdown(input_file.read())
+
 class url:
 	def GET(self, name):
 		if name in shortURLs.keys():
