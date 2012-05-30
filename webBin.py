@@ -67,7 +67,7 @@ class pBin:
 			filename = ''.join([choice(letters) for n in xrange(4)])
 		self.taken.append(filename)
 		f = open(pBinDir + "/" + filename, "w")
-		f.write(content)
+		f.write(content.encode('utf-8'))
 		f.close()
 		return "http://" + web.ctx.host + "/p?" + filename + "\n"
 	def GET(self):

@@ -8,11 +8,18 @@ import webapi as web
 import utils, net
 
 def attrget(obj, attr, value=None):
-    if hasattr(obj, 'has_key') and obj.has_key(attr): return obj[attr]
-    if hasattr(obj, attr): return getattr(obj, attr)
+    try:
+        if hasattr(obj, 'has_key') and obj.has_key(attr): 
+            return obj[attr]
+    except TypeError:
+        # Handle the case where has_key takes different number of arguments.
+        # This is the case with Model objects on appengine. See #134
+        pass
+    if hasattr(obj, attr):
+        return getattr(obj, attr)
     return value
 
-class Form:
+class Form(object):
     r"""
     HTML form.
     
@@ -240,7 +247,8 @@ class Dropdown(Input):
             else:
                 value, desc = arg, arg 
 
-            if self.value == value: select_p = ' selected="selected"'
+            if self.value == value or (isinstance(self.value, list) and value in self.value):
+                select_p = ' selected="selected"'
             else: select_p = ''
             x += '  <option%s value="%s">%s</option>\n' % (select_p, net.websafe(value), net.websafe(desc))
             

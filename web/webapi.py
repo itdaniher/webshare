@@ -19,9 +19,9 @@ __all__ = [
     "Redirect", "Found", "SeeOther", "NotModified", "TempRedirect", 
     "redirect", "found", "seeother", "notmodified", "tempredirect",
 
-    # 400, 401, 403, 404, 405, 406, 409, 410, 412
-    "BadRequest", "Unauthorized", "Forbidden", "NotFound", "NoMethod", "NotAcceptable", "Conflict", "Gone", "PreconditionFailed",
-    "badrequest", "unauthorized", "forbidden", "notfound", "nomethod", "notacceptable", "conflict", "gone", "preconditionfailed",
+    # 400, 401, 403, 404, 405, 406, 409, 410, 412, 415
+    "BadRequest", "Unauthorized", "Forbidden", "NotFound", "NoMethod", "NotAcceptable", "Conflict", "Gone", "PreconditionFailed", "UnsupportedMediaType",
+    "badrequest", "unauthorized", "forbidden", "notfound", "nomethod", "notacceptable", "conflict", "gone", "preconditionfailed", "unsupportedmediatype",
 
     # 500
     "InternalError", 
@@ -29,7 +29,7 @@ __all__ = [
 ]
 
 import sys, cgi, Cookie, pprint, urlparse, urllib
-from utils import storage, storify, threadeddict, dictadd, intget, utf8
+from utils import storage, storify, threadeddict, dictadd, intget, safestr
 
 config = storage()
 config.__doc__ = """
@@ -122,12 +122,32 @@ tempredirect = TempRedirect
 class BadRequest(HTTPError):
     """`400 Bad Request` error."""
     message = "bad request"
-    def __init__(self):
+    def __init__(self, message=None):
         status = "400 Bad Request"
+        headers = {'Content-Type': 'text/html'}
+        HTTPError.__init__(self, status, headers, message or self.message)
+
+badrequest = BadRequest
+
+class Unauthorized(HTTPError):
+    """`401 Unauthorized` error."""
+    message = "unauthorized"
+    def __init__(self):
+        status = "401 Unauthorized"
         headers = {'Content-Type': 'text/html'}
         HTTPError.__init__(self, status, headers, self.message)
 
-badrequest = BadRequest
+unauthorized = Unauthorized
+
+class Forbidden(HTTPError):
+    """`403 Forbidden` error."""
+    message = "forbidden"
+    def __init__(self):
+        status = "403 Forbidden"
+        headers = {'Content-Type': 'text/html'}
+        HTTPError.__init__(self, status, headers, self.message)
+
+forbidden = Forbidden
 
 class _NotFound(HTTPError):
     """`404 Not Found` error."""
@@ -149,12 +169,6 @@ def NotFound(message=None):
 
 notfound = NotFound
 
-unauthorized = Unauthorized = _status_code("401 Unauthorized")
-forbidden = Forbidden = _status_code("403 Forbidden")
-notacceptable = NotAcceptable = _status_code("406 Not Acceptable")
-conflict = Conflict = _status_code("409 Conflict")
-preconditionfailed = PreconditionFailed = _status_code("412 Precondition Failed")
-
 class NoMethod(HTTPError):
     """A `405 Method Not Allowed` error."""
     def __init__(self, cls=None):
@@ -172,6 +186,26 @@ class NoMethod(HTTPError):
         
 nomethod = NoMethod
 
+class NotAcceptable(HTTPError):
+    """`406 Not Acceptable` error."""
+    message = "not acceptable"
+    def __init__(self):
+        status = "406 Not Acceptable"
+        headers = {'Content-Type': 'text/html'}
+        HTTPError.__init__(self, status, headers, self.message)
+
+notacceptable = NotAcceptable
+
+class Conflict(HTTPError):
+    """`409 Conflict` error."""
+    message = "conflict"
+    def __init__(self):
+        status = "409 Conflict"
+        headers = {'Content-Type': 'text/html'}
+        HTTPError.__init__(self, status, headers, self.message)
+
+conflict = Conflict
+
 class Gone(HTTPError):
     """`410 Gone` error."""
     message = "gone"
@@ -181,6 +215,26 @@ class Gone(HTTPError):
         HTTPError.__init__(self, status, headers, self.message)
 
 gone = Gone
+
+class PreconditionFailed(HTTPError):
+    """`412 Precondition Failed` error."""
+    message = "precondition failed"
+    def __init__(self):
+        status = "412 Precondition Failed"
+        headers = {'Content-Type': 'text/html'}
+        HTTPError.__init__(self, status, headers, self.message)
+
+preconditionfailed = PreconditionFailed
+
+class UnsupportedMediaType(HTTPError):
+    """`415 Unsupported Media Type` error."""
+    message = "unsupported media type"
+    def __init__(self):
+        status = "415 Unsupported Media Type"
+        headers = {'Content-Type': 'text/html'}
+        HTTPError.__init__(self, status, headers, self.message)
+
+unsupportedmediatype = UnsupportedMediaType
 
 class _InternalError(HTTPError):
     """500 Internal Server Error`."""
@@ -210,7 +264,7 @@ def header(hdr, value, unique=False):
     If `unique` is True and a header with that name already exists,
     it doesn't add a new one. 
     """
-    hdr, value = utf8(hdr), utf8(value)
+    hdr, value = safestr(hdr), safestr(value)
     # protection against HTTP response splitting attack
     if '\n' in hdr or '\r' in hdr or '\n' in value or '\r' in value:
         raise ValueError, 'invalid characters in header'
@@ -287,22 +341,21 @@ def data():
         ctx.data = ctx.env['wsgi.input'].read(cl)
     return ctx.data
 
-def setcookie(name, value, expires="", domain=None, secure=False, httponly=False):
+def setcookie(name, value, expires='', domain=None,
+              secure=False, httponly=False, path=None):
     """Sets a cookie."""
-    if expires < 0: 
-        expires = -1000000000 
-    kargs = {'expires': expires, 'path':'/'}
-    if domain: 
-        kargs['domain'] = domain
+    morsel = Cookie.Morsel()
+    name, value = safestr(name), safestr(value)
+    morsel.set(name, value, urllib.quote(value))
+    if expires < 0:
+        expires = -1000000000
+    morsel['expires'] = expires
+    morsel['path'] = path or ctx.homepath+'/'
+    if domain:
+        morsel['domain'] = domain
     if secure:
-        kargs['secure'] = secure
-    # @@ should we limit cookies to a different path?
-    cookie = Cookie.SimpleCookie()
-    cookie[name] = urllib.quote(utf8(value))
-    for key, val in kargs.iteritems(): 
-        cookie[name][key] = val
-
-    value = cookie.items()[0][1].OutputString()
+        morsel['secure'] = secure
+    value = morsel.OutputString()
     if httponly:
         value += '; httponly'
     header('Set-Cookie', value)
