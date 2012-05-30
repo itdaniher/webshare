@@ -94,6 +94,7 @@ class upload:
 	def __init__(self):
 		cgi.maxlen = 100 * 1024 * 1024
 	def GET(self):
+		web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
 		return open("upload.html").read()
 	def POST(self):
 		try:
