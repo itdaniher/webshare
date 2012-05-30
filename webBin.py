@@ -1,5 +1,12 @@
-import web
 import os
+import sys
+
+abspath = os.path.dirname(__file__)
+sys.path.append(abspath)
+os.chdir(abspath)
+
+import web
+
 import cgi
 from random import choice
 from string import letters
@@ -25,7 +32,8 @@ urls = (
 		regexURLs, 'url',
 		'/whoami', 'whoami')
 
-app = web.application(urls, globals())
+app = web.application(urls, globals(), autoreload=False)
+application = app.wsgifunc()
 web.config.debug = False
 
 pBinDir = "data"
@@ -98,4 +106,3 @@ class upload:
 
 if __name__ == "__main__":
 	app.run()
-
