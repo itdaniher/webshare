@@ -1,3 +1,5 @@
+<link href="static/markdown.css" rel="stylesheet">
+
 this is [Ian Daniher](http://itdnhr.com/whoami)'s webapp & file hosting server.
 
 he likes building things and tinkering.
