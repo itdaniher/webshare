@@ -12,7 +12,7 @@ from random import choice
 from string import letters
 import mimetypes
 import re
-from tools import markdown
+from PythonMarkdown import markdown
 import codecs
 
 shortURLs = {
@@ -21,9 +21,9 @@ shortURLs = {
 regexURLs = "/(%s)" % '|'.join(shortURLs.keys())
 
 urls = (
-		'/(''|favicon\.ico|.*\.mkd)', 'files',
 		'/p', 'pBin',
 		'/upload', 'upload',
+		'/(.*|'')', 'files',
 		regexURLs, 'url')
 
 app = web.application(urls, globals(), autoreload=False)
@@ -44,15 +44,14 @@ class files:
 			return open("static/"+name).read()
 		else:
 			web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
-			input_file = codecs.open("mkd/"+name, mode="r", encoding="utf8")
-			return markdown.markdown(input_file.read())
+			string = codecs.open("mkd/"+name, mode="r", encoding="utf8").read()
+			return """<p><link href="/markdown.css" rel="stylesheet"></p>
+"""+markdown.markdown(string)
 
 class url:
 	def GET(self, name):
 		if name in shortURLs.keys():
 			return web.seeother(shortURLs[name])
-		else:
-			return "404 Not Found"
 
 class pBin:
 	def __init__(self):
