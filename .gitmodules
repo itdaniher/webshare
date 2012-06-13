@@ -4,3 +4,6 @@
 [submodule "webpy"]
 	path = webpy
 	url = git://github.com/webpy/webpy.git
+[submodule "mkd/itdaniher"]
+	path = mkd/itdaniher
+	url = git://github.com/itdaniher/itdaniher.git
