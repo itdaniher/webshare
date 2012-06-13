@@ -39,14 +39,17 @@ class files:
 		mimeType = mimetypes.guess_type(name)[0]
 		if mimeType == "None":
 			mimeType = "text/plain; charset=UTF-8"
-		if name.split('.')[-1] != "mkd":
-			web.header("Content-Type", mimeType)
-			return open("static/"+name).read()
-		else:
-			web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
+		try:
+			if name.split('.')[-1] != "mkd":
+				web.header("Content-Type", mimeType)
+				return open("static/"+name).read()
+			else:
+				web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
 			string = codecs.open("mkd/"+name, mode="r", encoding="utf8").read()
 			return """<p><link href="/markdown.css" rel="stylesheet"></p>
 """+markdown.markdown(string)
+		except IOError:
+			return "404"
 
 class url:
 	def GET(self, name):
