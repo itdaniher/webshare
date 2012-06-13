@@ -1,3 +1,6 @@
+[submodule "PythonMarkdown2"]
+	path = PythonMarkdown
+	url = git://github.com/trentm/python-markdown2.git 
 [submodule "PythonMarkdown"]
 	path = PythonMarkdown
-	url = git://github.com/waylan/Python-Markdown.git
+	url = git://github.com/trentm/python-markdown2.git
