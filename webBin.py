@@ -1,11 +1,11 @@
 import os
 import sys
 
-abspath = os.path.dirname(__file__)
-sys.path.append(abspath)
-os.chdir(abspath)
+#abspath = os.path.dirname(__file__)
+#sys.path.append(abspath)
+#os.chdir(abspath)
 
-import web
+import webpy as web
 
 import cgi
 from random import choice

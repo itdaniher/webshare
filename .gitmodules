@@ -1,3 +1,6 @@
 [submodule "PythonMarkdown"]
 	path = PythonMarkdown
 	url = git://github.com/trentm/python-markdown2.git
+[submodule "webpy"]
+	path = webpy
+	url = git://github.com/webpy/webpy.git
