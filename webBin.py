@@ -1,12 +1,11 @@
 import os
 import sys
 
-#abspath = os.path.dirname(__file__)
-#sys.path.append(abspath)
-#os.chdir(abspath)
+abspath = os.path.dirname(__file__)
+sys.path.append(abspath)
+os.chdir(abspath)
 
 import webpy as web
-
 import cgi
 from random import choice
 from string import letters
@@ -45,7 +44,10 @@ class files:
 				return open("static/"+name).read()
 			else:
 				web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
-			string = codecs.open("mkd/"+name, mode="r", encoding="utf8").read()
+			try:
+				string = codecs.open("mkd/"+name, mode="r", encoding="utf8").read()
+			except:
+				string = codecs.open("static/"+name, mode="r", encoding="utf8").read()
 			return """<p><link href="/markdown.css" rel="stylesheet"></p>
 """+markdown.markdown(string)
 		except IOError:
