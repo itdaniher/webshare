@@ -1,33 +1,27 @@
 import os
-import sys
 
 if __name__ != "__main__":
+	import sys
 	abspath = os.path.dirname(__file__)
 	sys.path.append(abspath)
 	os.chdir(abspath)
 
-import GitPython as git
+from PythonMarkdown import markdown
 import webpy as web
+
 import cgi
-from random import choice
-from string import letters
 import mimetypes
 import re
-from PythonMarkdown import markdown
 import codecs
-import git
 
-shortURLs = {
-        'ece': 'http://bit.ly/ece_stockroom'}
-
-regexURLs = "/(%s)" % '|'.join(shortURLs.keys())
+from random import choice
+from string import letters
 
 urls = (
 		'/g', 'update',
 		'/p', 'pBin',
 		'/upload', 'upload',
-		'/(.*|'')', 'files',
-		regexURLs, 'url')
+		'/(.*|'')', 'files')
 
 app = web.application(urls, globals(), autoreload=False)
 application = app.wsgifunc()
@@ -56,11 +50,6 @@ class files:
 """+markdown.markdown(string)
 		except IOError:
 			return "404"
-
-class url:
-	def GET(self, name):
-		if name in shortURLs.keys():
-			return web.seeother(shortURLs[name])
 
 class pBin:
 	def __init__(self):
@@ -91,14 +80,19 @@ class pBin:
 
 class update:
 	def __init__(self):
+		import GitPython as git
+		self.last = ''
 		self.repos = []
 		self.repos.append(git.Repo("./"))
 		for repo in self.repos[0].submodules:
 			self.repos.append(git.Repo(repo.path))
 	def POST(self):
+		self.last = web.input()
 		for repo in self.repos:
 			repo.remote().pull('master')
 		print "repo and all submodules updated to remote's master"
+	def GET(self):
+		return self.last
 
 class upload:
 	def __init__(self):
