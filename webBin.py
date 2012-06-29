@@ -1,10 +1,12 @@
 import os
 import sys
 
-abspath = os.path.dirname(__file__)
-sys.path.append(abspath)
-os.chdir(abspath)
+if __name__ != "__main__":
+	abspath = os.path.dirname(__file__)
+	sys.path.append(abspath)
+	os.chdir(abspath)
 
+import GitPython as git
 import webpy as web
 import cgi
 from random import choice
@@ -13,6 +15,7 @@ import mimetypes
 import re
 from PythonMarkdown import markdown
 import codecs
+import git
 
 shortURLs = {
         'ece': 'http://bit.ly/ece_stockroom'}
@@ -20,6 +23,7 @@ shortURLs = {
 regexURLs = "/(%s)" % '|'.join(shortURLs.keys())
 
 urls = (
+		'/g', 'update',
 		'/p', 'pBin',
 		'/upload', 'upload',
 		'/(.*|'')', 'files',
@@ -84,6 +88,17 @@ class pBin:
 			return os.listdir(pBinDir)
 		else:
 			return open(pBinDir + "/" + input).read()
+
+class update:
+	def __init__(self):
+		self.repos = []
+		self.repos.append(git.Repo("./"))
+		for repo in self.repos[0].submodules:
+			self.repos.append(git.Repo(repo.path))
+	def POST(self):
+		for repo in self.repos:
+			repo.remote().pull('master')
+		print "repo and all submodules updated to remote's master"
 
 class upload:
 	def __init__(self):

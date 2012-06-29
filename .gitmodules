@@ -7,3 +7,6 @@
 [submodule "mkd/itdaniher"]
 	path = mkd/itdaniher
 	url = git://github.com/itdaniher/itdaniher.git
+[submodule "GitPython"]
+	path = GitPython
+	url = git://github.com/gitpython-developers/GitPython.git
