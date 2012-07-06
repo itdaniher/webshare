@@ -39,7 +39,7 @@ class files:
 					for filename in filenames:
 						filePaths.append(os.path.join(dirname, filename))
 			return filePaths
-		self.filePaths = roots2paths(['mkd', 'static'])
+		self.filePaths = roots2paths(['mkd', pBinDir])
 	def GET(self, name):
 		if name == "":
 			name = "mkd/README.mkd"
