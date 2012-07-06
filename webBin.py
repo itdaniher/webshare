@@ -45,7 +45,7 @@ class files:
 			name = "mkd/README.mkd"
 		else:
 			if name not in self.filePaths:
-				results = [item for item in self.filePaths if re.search(name[1::], item)]
+				results = [item for item in self.filePaths if re.search(name, item)]
 				if bool(results):
 					name = choice(results)
 					web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
