@@ -48,6 +48,7 @@ class files:
 				results = [item for item in self.filePaths if re.search(name[1::], item)]
 				if bool(results):
 					name = choice(results)
+					web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
 					return "<html><head><meta http-equiv=\"REFRESH\" content=\"1;url=/" + name + "\"></head></html>"
 				else:
 					return "404" 
