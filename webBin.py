@@ -12,6 +12,7 @@ import webpy as web
 import cgi
 import mimetypes
 import re
+import pprint
 import codecs
 
 from random import choice
@@ -30,26 +31,37 @@ web.config.debug = False
 pBinDir = "data"
 
 class files:
+	def __init__(self):
+		def roots2paths(roots=['.']):
+			filePaths = []
+			for root in roots:
+				for dirname, dirnames, filenames in os.walk(root):
+					for filename in filenames:
+						filePaths.append(os.path.join(dirname, filename))
+			return filePaths
+		self.filePaths = roots2paths(['mkd', 'static'])
 	def GET(self, name):
 		if name == "":
-			name = "README.mkd"
+			name = "mkd/README.mkd"
+		else:
+			if name not in self.filePaths:
+				results = [item for item in self.filePaths if re.search(name[1::], item)]
+				if bool(results):
+					name = choice(results)
+					return "<html><head><meta http-equiv=\"REFRESH\" content=\"1;url=/" + name + "\"></head></html>"
+				else:
+					return "404" 
 		mimeType = mimetypes.guess_type(name)[0]
 		if mimeType == "None":
 			mimeType = "text/plain; charset=UTF-8"
-		try:
-			if name.split('.')[-1] != "mkd":
-				web.header("Content-Type", mimeType)
-				return open("static/"+name).read()
-			else:
-				web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
-			try:
-				string = codecs.open("mkd/"+name, mode="r", encoding="utf8").read()
-			except:
-				string = codecs.open("static/"+name, mode="r", encoding="utf8").read()
-			return """<p><link href="/markdown.css" rel="stylesheet"></p>
+		if name.split('.')[-1] != "mkd":
+			web.header("Content-Type", mimeType)
+			return open(name).read()
+		else:
+			web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
+			string = codecs.open(name, mode="r", encoding="utf8").read()
+			return """<p><link href="/static/markdown.css" rel="stylesheet"></p>
 """+markdown.markdown(string)
-		except IOError:
-			return "404"
 
 class pBin:
 	def __init__(self):
