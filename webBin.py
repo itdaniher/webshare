@@ -62,6 +62,7 @@ class files:
 					web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
 					return "<html><head><meta http-equiv=\"REFRESH\" content=\"1;url=/" + name + "\"></head></html>"
 				else:
+					web.header("Content-Type", "Content-Type: text/plain; charset=UTF-8")
 					return "404" 
 		mimeType = mimetypes.guess_type(name)[0]
 		if mimeType == "None":
