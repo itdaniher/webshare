@@ -1,7 +1,6 @@
 import os
 import sys
 
-sys.path.append(os.path.realpath('./PythonMarkdown'))
 sys.path.append(os.path.realpath('./webpy'))
 sys.path.append(os.path.realpath('./GitPython'))
 
@@ -10,7 +9,7 @@ if __name__ != "__main__":
 	sys.path.append(abspath)
 	os.chdir(abspath)
 
-import markdown
+from PythonMarkdown import markdown
 import web
 import git
 
@@ -116,6 +115,7 @@ class update:
 			repo.remote().pull('master')
 		print "repo and all submodules updated to remote's master"
 	def GET(self):
+		web.header("Content-Type", "Content-Type: text/plain; charset=UTF-8")
 		return self.last
 
 class upload:
