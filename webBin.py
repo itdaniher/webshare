@@ -1,22 +1,33 @@
 import os
+import sys
+
+sys.path.append(os.path.realpath('./PythonMarkdown'))
+sys.path.append(os.path.realpath('./webpy'))
+sys.path.append(os.path.realpath('./GitPython'))
 
 if __name__ != "__main__":
-	import sys
 	abspath = os.path.dirname(__file__)
 	sys.path.append(abspath)
 	os.chdir(abspath)
 
-from PythonMarkdown import markdown
-import webpy as web
+import markdown
+import web
+import git
 
 import cgi
 import mimetypes
-import re
 import pprint
 import codecs
 
 from random import choice
 from string import letters
+
+try:
+    import re2 as re
+except ImportError:
+    import re
+else:
+    re.set_fallback_notification(re.FALLBACK_WARNING)
 
 urls = (
 		'/g', 'update',
@@ -93,7 +104,6 @@ class pBin:
 
 class update:
 	def __init__(self):
-		import GitPython as git
 		self.last = ''
 		self.repos = []
 		self.repos.append(git.Repo("./"))
