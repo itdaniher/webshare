@@ -42,13 +42,8 @@ pBinDir = "data"
 
 class files:
 	def __init__(self):
-		def roots2paths(roots=['.']):
-			filePaths = []
-			for root in roots:
-				for dirname, dirnames, filenames in os.walk(root):
-					for filename in filenames:
-						filePaths.append(os.path.join(dirname, filename))
-			return filePaths
+		roots2paths = lambda roots=['.']: [os.path.join(dirname, filename) for root in roots 
+			for dirname, dirnames, filenames in os.walk(root) for filename in filenames]
 		self.filePaths = roots2paths(['mkd', pBinDir])
 	def GET(self, name):
 		if name == "":
