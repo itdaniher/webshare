@@ -1,13 +1,14 @@
 import os
 import sys
 
-sys.path.append(os.path.realpath('./webpy'))
-sys.path.append(os.path.realpath('./GitPython'))
 
 if __name__ != "__main__":
 	abspath = os.path.dirname(__file__)
 	sys.path.append(abspath)
 	os.chdir(abspath)
+
+sys.path.append(os.path.realpath('./webpy'))
+sys.path.append(os.path.realpath('./GitPython'))
 
 from PythonMarkdown import markdown
 import web
