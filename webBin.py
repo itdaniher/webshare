@@ -33,6 +33,7 @@ urls = (
 		'/g', 'update',
 		'/p', 'pBin',
 		'/upload', 'upload',
+		'/ip', 'getip',
 		'/(.*|'')', 'files')
 
 app = web.application(urls, globals(), autoreload=False)
@@ -128,6 +129,12 @@ class upload:
 			raise web.seeother('/upload')
 		except ValueError:
 			return "too big!"
+
+class getip:
+	def GET(self):
+		web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
+		return str(self.ctx.ip)
+
 
 if __name__ == "__main__":
 	app.run()
