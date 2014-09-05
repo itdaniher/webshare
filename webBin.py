@@ -133,7 +133,7 @@ class upload:
 class getip:
 	def GET(self):
 		web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
-		return str(self.ctx.ip)
+		return str(web.ctx.ip)
 
 
 if __name__ == "__main__":
