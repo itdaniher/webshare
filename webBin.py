@@ -10,7 +10,7 @@ if __name__ != "__main__":
 sys.path.append(os.path.realpath('./webpy'))
 sys.path.append(os.path.realpath('./GitPython'))
 
-from PythonMarkdown import markdown
+import markdown2 as markdown
 import web
 import git
 
@@ -69,8 +69,7 @@ class files:
 		else:
 			web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
 			string = codecs.open(name, mode="r", encoding="utf8").read()
-			return """<p><link href="/static/markdown.css" rel="stylesheet"></p>
-"""+markdown.markdown(string)
+			return """<p><link href="/static/markdown.css" rel="stylesheet"></p>"""+markdown.markdown(string)
 
 class pBin:
 	def __init__(self):
@@ -95,7 +94,7 @@ class pBin:
 			input = input
 		web.header("Content-Type", "text/plain; charset=UTF-8")
 		if len(input) == 0:
-			return os.listdir(pBinDir)
+			return '\n'.join(os.listdir(pBinDir))
 		else:
 			return open(pBinDir + "/" + input).read()
 
@@ -133,8 +132,7 @@ class upload:
 class getip:
 	def GET(self):
 		web.header("Content-Type", "Content-Type: text/html; charset=UTF-8")
-		return str(web.ctx.ip)
-
+		return str(web.ctx.host)
 
 if __name__ == "__main__":
 	app.run()
